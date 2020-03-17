@@ -148,7 +148,6 @@ function addNewProduct() {
         let query = `INSERT INTO products (item_id, product_name, department_name, price, stock_quantity)
         VALUES (` + itemId + `, "` + answer.product_name + `", "` + answer.department_name + `", ` + answer.price
         + `, ` + answer.stock_quantity + `)`;
-        console.log(query);
         connection.query(query, (err, res) => {
             if(err) throw err;
             connection.query('SELECT * FROM products WHERE ?', {item_id: itemId}, (err, res) => {

@@ -66,20 +66,20 @@ function purchasePrompt() {
             name: 'quantity'
         }
     ]).then((res) => {
-        console.log(res);
         const purchaseQuantity = res.quantity;
         let itemId = res.item_id;
         let query = "SELECT * FROM products WHERE ?";
         let purchaseItem = connection.query(query, {item_id: itemId}, (err, res) => {
             if (err) throw err;
             if(res[0].stock_quantity > 0 && res[0].stock_quantity >= purchaseQuantity) {
+                let productName = res[0].product_name;
                 let purchaseTotal = res[0].price * purchaseQuantity;
                 let newStock = res[0].stock_quantity - purchaseQuantity;
                 let updateQuery = "UPDATE products SET stock_quantity = " + newStock.toString() + " WHERE ?";
                 let updateStock = connection.query(updateQuery, {item_id: itemId}, (err, res) => {
                     if (err) throw err;
                     // update db to reflect purchase
-                    console.log("\nTotal: $" + purchaseTotal);
+                    console.log("Thank you for purchasing " + productName + "!\nTotal: $" + purchaseTotal);
                     connection.end();
                 });
                 } else {
